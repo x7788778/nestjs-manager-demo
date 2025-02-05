@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-25 04:13:40
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-04 18:27:51
+ * @LastEditTime: 2025-02-04 23:56:10
  * @FilePath: /nestjs-manager-demo/src/app.module.ts
  * @name: filename
  * @description: description
@@ -34,11 +34,11 @@ if (!globalThis.crypto) {
       imports: [ConfigModule],
       // 使用工厂函数动态生成 TypeORM 配置
       useFactory: (configService: ConfigService) => {
-        console.log('DATABASE_HOST:', configService.get<string>('DATABASE_HOST'));
-  console.log('DATABASE_PORT:', configService.get<number>('DATABASE_PORT'));
-  console.log('DATABASE_USERNAME:', configService.get<string>('DATABASE_USERNAME'));
-  console.log('DATABASE_PASSWORD:', configService.get<string>('DATABASE_PASSWORD'));
-  console.log('DATABASE_NAME:', configService.get<string>('DATABASE_NAME'));
+  //       console.log('DATABASE_HOST:', configService.get<string>('DATABASE_HOST'));
+  // console.log('DATABASE_PORT:', configService.get<number>('DATABASE_PORT'));
+  // console.log('DATABASE_USERNAME:', configService.get<string>('DATABASE_USERNAME'));
+  // console.log('DATABASE_PASSWORD:', configService.get<string>('DATABASE_PASSWORD'));
+  // console.log('DATABASE_NAME:', configService.get<string>('DATABASE_NAME'));
         return {
         type: 'postgres', // 数据库类型，这里使用 PostgreSQL
         host: configService.get<string>('DATABASE_HOST'), // 数据库主机地址

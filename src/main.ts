@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-25 04:13:40
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-01-27 23:19:14
+ * @LastEditTime: 2025-02-04 23:54:07
  * @FilePath: /nestjs-manager-demo/src/main.ts
  * @name: filename
  * @description: description
@@ -18,7 +18,9 @@ import { AppModule } from './app.module';
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,{
+    logger: ['error', 'warn', 'log', 'verbose', 'debug'], // 确保包含需要的日志级别
+  });
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
