@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-26 20:10:38
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-05 01:29:24
+ * @LastEditTime: 2025-02-06 02:04:59
  * @FilePath: /nestjs-manager-demo/src/user/user.service.ts
  * @name: filename
  * @description: description
@@ -9,7 +9,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import  User  from './entities/user.entity';
+import { User }  from './entities/user.entity';
 
 @Injectable()
 export class UserService {
