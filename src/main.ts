@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-25 04:13:40
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-06 22:11:50
+ * @LastEditTime: 2025-02-07 00:38:29
  * @FilePath: /nestjs-manager-demo/src/main.ts
  * @name: filename
  * @description: description
@@ -9,6 +9,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { ValidationPipe } from './pipes/validation.pipe';
 // import * as crypto from 'crypto'; // 手动引入 crypto 模块
 // global.crypto = crypto;
 // const uuid = crypto.randomUUID();
@@ -23,6 +25,12 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log', 'verbose', 'debug'], // 确保包含需要的日志级别
   });
 
+  // 应用全局异常过滤器
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  // 应用全局验证管道
+  app.useGlobalPipes(new ValidationPipe());
+  
   // 创建 Swagger 文档配置
   const config = new DocumentBuilder()
     .setTitle('用户管理 API')
