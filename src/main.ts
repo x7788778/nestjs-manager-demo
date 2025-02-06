@@ -1,13 +1,14 @@
 /*
  * @Date: 2025-01-25 04:13:40
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-04 23:54:07
+ * @LastEditTime: 2025-02-06 22:11:50
  * @FilePath: /nestjs-manager-demo/src/main.ts
  * @name: filename
  * @description: description
  */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 // import * as crypto from 'crypto'; // 手动引入 crypto 模块
 // global.crypto = crypto;
 // const uuid = crypto.randomUUID();
@@ -21,6 +22,21 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule,{
     logger: ['error', 'warn', 'log', 'verbose', 'debug'], // 确保包含需要的日志级别
   });
+
+  // 创建 Swagger 文档配置
+  const config = new DocumentBuilder()
+    .setTitle('用户管理 API')
+    .setDescription('用户注册、登录及权限管理的 API 文档')
+    .setVersion('1.0')
+    .addBearerAuth() // 添加 Bearer 认证支持
+    .build();
+
+  // 根据配置生成 Swagger 文档
+  const document = SwaggerModule.createDocument(app, config);
+
+  // 将 Swagger 文档挂载到 /api 路径
+  SwaggerModule.setup('api', app, document);
+  
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
