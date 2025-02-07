@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-26 20:10:38
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-08 00:15:31
+ * @LastEditTime: 2025-02-08 00:46:09
  * @FilePath: /nestjs-manager-demo/src/user/user.service.ts
  * @name: filename
  * @description: description
@@ -14,8 +14,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { PaginateUsersDto } from './dto/paginate-users.dto';
 import { SearchUsersDto } from './dto/search-users.dto';
+import { Logger } from '@nestjs/common';
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
   
   constructor(
     @InjectRepository(User)
@@ -28,19 +30,24 @@ export class UserService {
 
   async createUser(createUserDto) {
     console.log('即将保存的用户信息:', createUserDto);
+    this.logger.log(`Creating user with username: ${createUserDto.username}`);
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }
 
   async findOne(username: string): Promise<User | undefined> {
+    this.logger.log(`Searching for user with username: ${username}`);
+
     return this.userRepository.findOne({ where: { username } });
   }
  
   // 更新用户信息的方法，接收用户 ID 和 UpdateUserDto 类型的参数
   async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    this.logger.log(`Updating user with id: ${id}`);
     // 根据用户 ID 查找用户
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
+      this.logger.error(`User with id ${id} not found`);
       // 如果未找到用户，抛出 404 异常
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -57,6 +64,7 @@ export class UserService {
   
   // 删除用户的方法，接收用户 ID 作为参数
   async deleteUser(id: number) {
+    this.logger.log(`Deleting user with id: ${id}`);
     // 根据用户 ID 查找用户
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
@@ -69,6 +77,7 @@ export class UserService {
 
   // 分页查询用户的方法，接收 PaginateUsersDto 类型的参数
   async paginateUsers(paginateUsersDto: PaginateUsersDto) {
+    this.logger.log(`Paginating users with page: ${paginateUsersDto.page} and limit: ${paginateUsersDto.limit}`);
     const { page, limit } = paginateUsersDto;
     // 根据传入的 page 和 limit 计算出偏移量 skip  用于分页查询
     const skip = (page - 1) * limit;
@@ -87,6 +96,7 @@ export class UserService {
 
   // 搜索用户的方法，接收 SearchUsersDto 类型的参数
   async searchUsers(searchUsersDto: SearchUsersDto) {
+    this.logger.log(`Searching users with criteria: ${JSON.stringify(searchUsersDto)}`);
     const queryBuilder = this.userRepository.createQueryBuilder('user');
 
     if (searchUsersDto.username) {
