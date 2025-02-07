@@ -1,12 +1,12 @@
 /*
  * @Date: 2025-01-26 20:10:38
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-08 00:46:09
+ * @LastEditTime: 2025-02-08 01:10:33
  * @FilePath: /nestjs-manager-demo/src/user/user.service.ts
  * @name: filename
  * @description: description
  */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User }  from './entities/user.entity';
@@ -31,6 +31,11 @@ export class UserService {
   async createUser(createUserDto) {
     console.log('即将保存的用户信息:', createUserDto);
     this.logger.log(`Creating user with username: ${createUserDto.username}`);
+    
+    const existingUser = await this.userRepository.findOne({ where: { username: createUserDto.username } });
+    if (existingUser) {
+      throw new ConflictException('Username already exists');
+    }
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }

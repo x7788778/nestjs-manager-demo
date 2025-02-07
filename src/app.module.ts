@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-25 04:13:40
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-04 23:56:10
+ * @LastEditTime: 2025-02-08 01:02:01
  * @FilePath: /nestjs-manager-demo/src/app.module.ts
  * @name: filename
  * @description: description
@@ -16,6 +16,7 @@ import { webcrypto } from 'webcrypto';
 import  UserModule  from './user/user.module';
 import * as dotenv from 'dotenv';
 import { AuthModule } from './auth/auth.module';
+import { RateLimiterConfigModule } from './rate-limiter/rate-limiter.module';
 dotenv.config()
 if (!globalThis.crypto) {
   globalThis.crypto = webcrypto as unknown as Crypto;
@@ -57,7 +58,8 @@ if (!globalThis.crypto) {
       
     },),
     UserModule,
-    AuthModule
+    AuthModule,
+    RateLimiterConfigModule
   ],
   controllers: [AppController],
   providers: [AppService],
