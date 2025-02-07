@@ -1,12 +1,12 @@
 /*
  * @Date: 2025-01-26 20:10:59
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-06 22:48:04
+ * @LastEditTime: 2025-02-07 21:40:24
  * @FilePath: /nestjs-manager-demo/src/user/user.controller.ts
  * @name: filename
  * @description: description
  */
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Put, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -16,18 +16,24 @@ import { RolesGuard } from '../auth/role.guard';
 import { Roles } from '../auth/role.decorator';
 import { UserRole } from './entities/user.entity';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
-  ) {}
+  ) {
+    // console.log('UserController constructor called');
+    // console.log('userRepository:', this.userService,'+++',this.authService);
+    
+  }
 
   @Post()
   @ApiOperation({ summary: '用户注册' })
   @ApiResponse({ status: 201, description: '用户注册成功' })
   async create(@Body() createUserDto: CreateUserDto) {
+    console.log('create-controller-createUserDto:', createUserDto);
     // return this.userService.createUser(createUserDto);
     return this.authService.register(createUserDto);
   }
@@ -63,5 +69,27 @@ export class UserController {
   async getAdminData() {
     // 返回只有管理员才能访问的数据
     return { message: 'This is admin-only data.' };
+  }
+
+  // update 接口使用 PUT 请求方法，接收用户 ID 和更新信息，
+  // 调用 UsersService 的 updateUser 方法进行更新；
+  // delete 接口使用 DELETE 请求方法，接收用户 ID，
+  // 调用 UsersService 的 deleteUser 方法进行删除。
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '更新用户信息' })
+  @ApiResponse({ status: 200, description: '用户信息更新成功' })
+  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.updateUser(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '删除用户' })
+  @ApiResponse({ status: 200, description: '用户删除成功' })
+  async delete(@Param('id') id: number) {
+    return this.userService.deleteUser(id);
   }
 }

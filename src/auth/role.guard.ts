@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-02-06 00:29:47
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-06 01:06:42
- * @FilePath: /nestjs-manager-demo/src/auth/role.gaurd.ts
+ * @LastEditTime: 2025-02-07 21:35:06
+ * @FilePath: /nestjs-manager-demo/src/auth/role.guard.ts
  * @name: filename
  * @description: description
  */
@@ -15,7 +15,9 @@ import { UserRole } from '../user/entities/user.entity';
 @Injectable()
 export class RolesGuard implements CanActivate {
   // 注入 Reflector 服务，用于获取元数据
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector: Reflector) {
+    // console.log('RolesGuard+++++++',this.reflector);
+  }
 
   // 实现 canActivate 方法，该方法决定请求是否可以继续执行
   canActivate(context: ExecutionContext): boolean {

@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-02-01 16:20:58
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-01 16:21:47
+ * @LastEditTime: 2025-02-07 21:35:03
  * @FilePath: /nestjs-manager-demo/src/auth/jwt.strategy.ts
  * @name: filename
  * @description: description
@@ -19,6 +19,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });
+
+    // console.log('JwtStrategy++++++',this.usersService);
   }
 
   async validate(payload: any) {

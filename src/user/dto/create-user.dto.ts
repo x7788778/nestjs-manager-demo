@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-30 23:49:07
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-07 00:40:23
+ * @LastEditTime: 2025-02-07 18:39:10
  * @FilePath: /nestjs-manager-demo/src/user/dto/create-user.dto.ts
  * @name: filename
  * @description: description

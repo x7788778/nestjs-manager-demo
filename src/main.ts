@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-25 04:13:40
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-07 00:38:29
+ * @LastEditTime: 2025-02-07 21:30:09
  * @FilePath: /nestjs-manager-demo/src/main.ts
  * @name: filename
  * @description: description
@@ -27,9 +27,9 @@ async function bootstrap() {
 
   // 应用全局异常过滤器
   app.useGlobalFilters(new HttpExceptionFilter());
-
+  console.log("new ValidationPipe()",JSON.stringify(new ValidationPipe()))
   // 应用全局验证管道
-  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalPipes(new ValidationPipe());
   
   // 创建 Swagger 文档配置
   const config = new DocumentBuilder()
