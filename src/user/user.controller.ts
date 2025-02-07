@@ -1,12 +1,12 @@
 /*
  * @Date: 2025-01-26 20:10:59
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-07 21:40:24
+ * @LastEditTime: 2025-02-07 23:39:49
  * @FilePath: /nestjs-manager-demo/src/user/user.controller.ts
  * @name: filename
  * @description: description
  */
-import { Controller, Post, Body, Get, UseGuards, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Put, Param, Delete, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -17,6 +17,7 @@ import { Roles } from '../auth/role.decorator';
 import { UserRole } from './entities/user.entity';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginateUsersDto } from './dto/paginate-users.dto';
 
 @Controller('user')
 export class UserController {
@@ -91,5 +92,14 @@ export class UserController {
   @ApiResponse({ status: 200, description: '用户删除成功' })
   async delete(@Param('id') id: number) {
     return this.userService.deleteUser(id);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '分页查询用户列表' })
+  @ApiResponse({ status: 200, description: '成功返回分页用户列表' })
+  async paginate(@Query() paginateUsersDto: PaginateUsersDto) {
+    return this.userService.paginateUsers(paginateUsersDto);
   }
 }

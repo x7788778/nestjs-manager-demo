@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-26 20:10:38
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-07 21:33:51
+ * @LastEditTime: 2025-02-07 23:38:41
  * @FilePath: /nestjs-manager-demo/src/user/user.service.ts
  * @name: filename
  * @description: description
@@ -12,6 +12,7 @@ import { Repository } from 'typeorm';
 import { User }  from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { PaginateUsersDto } from './dto/paginate-users.dto';
 
 @Injectable()
 export class UserService {
@@ -64,5 +65,23 @@ export class UserService {
     }
     // 从数据库中删除该用户
     return this.userRepository.remove(user);
+  }
+
+  // 分页查询用户的方法，接收 PaginateUsersDto 类型的参数
+  async paginateUsers(paginateUsersDto: PaginateUsersDto) {
+    const { page, limit } = paginateUsersDto;
+    // 根据传入的 page 和 limit 计算出偏移量 skip  用于分页查询
+    const skip = (page - 1) * limit;
+    // 使用 TypeORM 的 findAndCount 方法进行分页查询
+    const [users, total] = await this.userRepository.findAndCount({
+      skip,
+      take: limit,
+    });
+    return {
+      users,
+      total,
+      page,
+      limit,
+    };
   }
 }
