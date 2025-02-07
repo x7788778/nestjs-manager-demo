@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-26 20:10:59
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-07 23:39:49
+ * @LastEditTime: 2025-02-08 00:27:15
  * @FilePath: /nestjs-manager-demo/src/user/user.controller.ts
  * @name: filename
  * @description: description
@@ -18,6 +18,7 @@ import { UserRole } from './entities/user.entity';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginateUsersDto } from './dto/paginate-users.dto';
+import { SearchUsersDto } from './dto/search-users.dto';
 
 @Controller('user')
 export class UserController {
@@ -101,5 +102,15 @@ export class UserController {
   @ApiResponse({ status: 200, description: '成功返回分页用户列表' })
   async paginate(@Query() paginateUsersDto: PaginateUsersDto) {
     return this.userService.paginateUsers(paginateUsersDto);
+  }
+  
+  @Get('search')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '搜索用户' })
+  @ApiResponse({ status: 200, description: '成功返回搜索结果' })
+  async search(@Query() searchUsersDto: SearchUsersDto) {
+    return this.userService.searchUsers(searchUsersDto);
   }
 }

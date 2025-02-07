@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-26 20:10:38
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-07 23:38:41
+ * @LastEditTime: 2025-02-08 00:15:31
  * @FilePath: /nestjs-manager-demo/src/user/user.service.ts
  * @name: filename
  * @description: description
@@ -13,7 +13,7 @@ import { User }  from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { PaginateUsersDto } from './dto/paginate-users.dto';
-
+import { SearchUsersDto } from './dto/search-users.dto';
 @Injectable()
 export class UserService {
   
@@ -83,5 +83,23 @@ export class UserService {
       page,
       limit,
     };
+  }
+
+  // 搜索用户的方法，接收 SearchUsersDto 类型的参数
+  async searchUsers(searchUsersDto: SearchUsersDto) {
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+
+    if (searchUsersDto.username) {
+      // 根据用户名进行模糊搜索
+      queryBuilder.andWhere('user.username LIKE :username', { username: `%${searchUsersDto.username}%` });
+    }
+
+    if (searchUsersDto.role) {
+      // 根据用户角色进行精确搜索
+      queryBuilder.andWhere('user.role = :role', { role: searchUsersDto.role });
+    }
+
+    const users = await queryBuilder.getMany();
+    return users;
   }
 }

@@ -1,7 +1,7 @@
 <!--
  * @Date: 2025-01-26 20:07:31
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-04 18:50:50
+ * @LastEditTime: 2025-02-08 00:30:47
  * @FilePath: /nestjs-manager-demo/step.md
  * @name: filename
  * @description: description
@@ -122,3 +122,14 @@ sql
 使用 npm run start:dev 启动 NestJS 项目
 模拟请求
 使用 Postman、cURL 或 Axios 模拟用户注册和登录请求
+
+
+
+
+
+
+接口方法
+
+搜索
+http://localhost:3000/user/search?username=aaa&role=user
+header加token
