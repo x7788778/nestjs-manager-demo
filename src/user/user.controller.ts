@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-26 20:10:59
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-08 00:27:15
+ * @LastEditTime: 2025-02-13 01:47:21
  * @FilePath: /nestjs-manager-demo/src/user/user.controller.ts
  * @name: filename
  * @description: description
@@ -95,7 +95,7 @@ export class UserController {
     return this.userService.deleteUser(id);
   }
 
-  @Get()
+  @Get('userlist')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiOperation({ summary: '分页查询用户列表' })

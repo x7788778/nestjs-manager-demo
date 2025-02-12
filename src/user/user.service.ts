@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-01-26 20:10:38
  * @LastEditors: zhaogang 156606672@qq.com
- * @LastEditTime: 2025-02-08 01:10:33
+ * @LastEditTime: 2025-02-13 02:19:47
  * @FilePath: /nestjs-manager-demo/src/user/user.service.ts
  * @name: filename
  * @description: description
@@ -88,7 +88,7 @@ export class UserService {
     const skip = (page - 1) * limit;
     // 使用 TypeORM 的 findAndCount 方法进行分页查询
     const [users, total] = await this.userRepository.findAndCount({
-      skip,
+      skip: skip?skip:0,
       take: limit,
     });
     return {
